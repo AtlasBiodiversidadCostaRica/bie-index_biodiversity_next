@@ -83,6 +83,7 @@ class IndexService implements GrailsConfigurationAware {
         docsToIndex.each { map ->
             def solrDoc = new SolrInputDocument()
             map.each{ fieldName, fieldValue ->
+                log.error("IndexService.indexBatch fieldName: " + fieldName + ", fieldValue: " + fieldValue)
                 def boost = 1.0f
                 if (fieldValue && Map.class.isAssignableFrom(fieldValue.getClass()) && fieldValue["boost"]) {
                     boost = fieldValue.boost
@@ -102,6 +103,7 @@ class IndexService implements GrailsConfigurationAware {
         //add
         client.add(buffer)
         log.debug "Doing SOLR commit for ${buffer.size()} docs"
+        log.error("Doing SOLR commit for ${buffer.size()} docs")
         //commit
         client.commit(true, false, true)
 
